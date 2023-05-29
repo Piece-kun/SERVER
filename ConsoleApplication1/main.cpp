@@ -1,4 +1,4 @@
-﻿#undef UNICODE
+#undef UNICODE
 
 #define WIN32_LEAN_AND_MEAN
 #include<fstream>
@@ -180,6 +180,7 @@ void SendMessageToClient(int ID)
                     strcat_s(buffer, a);
                     send(ClientSockets[ID], buffer, strlen(buffer), 0);
                     bw <<"MATH " << buffer << '\n';
+                    goto end;
                     break;
                 }
                 case '-': {
@@ -191,6 +192,8 @@ void SendMessageToClient(int ID)
                     strcat_s(buffer, a);
                     send(ClientSockets[ID], buffer, strlen(buffer), 0);
                     bw << "MATH " << buffer << '\n';
+                    goto end;
+
                     break;
                 }
                 case '*': {
@@ -202,6 +205,7 @@ void SendMessageToClient(int ID)
                     strcat_s(buffer, a);
                     send(ClientSockets[ID], buffer, strlen(buffer), 0);
                     bw << "MATH " << buffer << '\n';
+                    goto end;
                     break;
                 }
                 case '/': {
@@ -213,15 +217,18 @@ void SendMessageToClient(int ID)
                     strcat_s(buffer, a);
                     send(ClientSockets[ID], buffer, strlen(buffer), 0);
                     bw << "MATH " << buffer << '\n';
+                    goto end;
                     break;
                 }
                 }
+
             }
             if (!strcmp(buffer, "HIST"))
             {
                 bw.close();
                 
                 br.open("history.txt", ios::in);
+                br.seekg(0);
                 if (!br) {
                     cout << "File not found!";
                 }
@@ -231,7 +238,7 @@ void SendMessageToClient(int ID)
                     br.read(buffer,512);
                     send(ClientSockets[ID], buffer, strlen(buffer), 0);
                 }
-                if (!strcmp(buffer, NULL))std:terminate();
+                br.close();
             }
             else
             {
